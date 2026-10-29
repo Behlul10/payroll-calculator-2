@@ -11,20 +11,27 @@ public class PayrollApp {
         Scanner myScanner = new Scanner(System.in);
         String userInput;
 
+        String filePath = "src/main/resources/employees.csv";
+        String rootPath = "src/main/resources/";
+        String userFileName;
         int command;
         String line;
         ArrayList<Employee> employees = new ArrayList<>();
 
         try {
-            //option 1
-            FileReader fileReaderEmployees = new FileReader("src/main/resources/employees.csv");
+            FileReader fileReaderEmployees = new FileReader(filePath);
             BufferedReader bufReaderEmployees = new BufferedReader(fileReaderEmployees);
+
+            System.out.println("name the file with the .extention: ");
+            userFileName = myScanner.nextLine();
+
+            FileWriter writer = new FileWriter(rootPath + userFileName);
 
             //Read ignore the first line (the header)
             String header = bufReaderEmployees.readLine();
             System.out.println("Skipping header: " + header);
 
-            while((line = bufReaderEmployees.readLine()) != null){
+            while ((line = bufReaderEmployees.readLine()) != null) {
                 String[] fields = line.split("\\|");
 
                 //extract string vals raw
@@ -36,21 +43,17 @@ public class PayrollApp {
                 //parse strings into the corect types
                 int id = Integer.parseInt(idStr);
                 float hours = Float.parseFloat(hoursStr);
-                float rate = Float.parseFloat(rateStr); // Note: Use Float.parseFloat for float type
-
+                float rate = Float.parseFloat(rateStr);
                 Employee emp = new Employee(id, nameStr, hours, rate);
 
                 employees.add(emp);
 
-                System.out.printf("""
-                        ------------------------
-                        Employee ID: %d
-                        Name: %S
-                        Gross Pay: $%.2f%n
-                        """, emp.getEmployeeId(), emp.getName(), emp.getGrossPay());
+                writer.write(String.format("Employee ID: %d, Name: %s, Gross Pay: $%.2f%n",
+                        emp.getEmployeeId(), emp.getName(), emp.getGrossPay()));
             }
+            writer.close();
             System.out.println("------------------------");
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
