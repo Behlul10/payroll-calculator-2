@@ -2,19 +2,16 @@ package com.pluralsight;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 
 public class PayrollApp {
     public static void main(String[] args) {
         Scanner myScanner = new Scanner(System.in);
-        String userInput;
 
         String filePath = "src/main/resources/employees.csv";
         String rootPath = "src/main/resources/";
         String userFileName;
-        int command;
         String line;
         ArrayList<Employee> employees = new ArrayList<>();
 
